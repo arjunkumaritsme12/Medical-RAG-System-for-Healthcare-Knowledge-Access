@@ -25,6 +25,16 @@ function App() {
   const [simplified, setSimplified] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
+  
+  // User Dashboard State
+  const [showProfile, setShowProfile] = useState(false);
+  const [userProfile, setUserProfile] = useState({
+    age: '',
+    gender: 'Not specified',
+    bp: '',
+    history: ''
+  });
+
   const answerRef = useRef(null);
 
   useEffect(() => {
