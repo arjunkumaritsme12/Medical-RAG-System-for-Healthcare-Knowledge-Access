@@ -14,15 +14,7 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
- # Medical-RAG-System-for-Healthcare-Knowledge-Access
-# 🩺 MedRAG AI – Intelligent Medical Knowledge Assistant
 
-**Ask. Retrieve. Understand. Powered by RAG**
-
-MedRAG AI is a hackathon-focused medical AI assistant designed to provide **evidence-based, structured, and context-aware medical responses** using a Retrieval-Augmented Generation (RAG) inspired workflow.  
-The system is built to simulate an intelligent medical knowledge assistant that retrieves disease-related information from a structured medical dataset and presents it through a premium Streamlit interface.
-
----
 
 ## 🚀 Project Overview
 
