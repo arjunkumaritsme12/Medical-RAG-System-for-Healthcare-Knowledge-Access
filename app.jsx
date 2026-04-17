@@ -114,3 +114,95 @@ function App() {
         <div className="mesh-blob blob-2"></div>
         <div className="mesh-blob blob-3"></div>
       </div>
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div>
+          <h3>⚙️ Settings & Info</h3>
+          <div className="theme-toggle-row">
+            <span>Dark Mode</span>
+            <label style={{cursor:'pointer'}}>
+              <input 
+                type="checkbox" 
+                checked={theme === 'dark'} 
+                onChange={toggleTheme} 
+                style={{marginLeft:'10px'}}
+              />
+            </label>
+          </div>
+        </div>
+        
+        <hr style={{ borderColor: 'var(--border-color)', margin: '5px 0' }}/>
+        
+        <div>
+          <h3>🔬 Advanced Search</h3>
+          <div className="advanced-setting">
+            <label>Target Demographic</label>
+            <select className="styled-select" id="demographic" defaultValue="General">
+              <option>General</option>
+              <option>Pediatric</option>
+              <option>Adult</option>
+              <option>Geriatric</option>
+            </select>
+          </div>
+          <div className="advanced-setting">
+            <label>Guideline Source</label>
+            <select className="styled-select" id="guidelines" defaultValue="Global (WHO)">
+              <option>Global (WHO)</option>
+              <option>US (NIH/CDC)</option>
+              <option>European (EMA)</option>
+            </select>
+          </div>
+          <div className="advanced-setting" style={{marginTop: '1rem'}}>
+            <label className="styled-checkbox">
+              <input type="checkbox" id="experimental" />
+              Include Experimental Trials
+            </label>
+          </div>
+          <button className="primary-btn" style={{marginTop:'1.5rem', width:'100%', padding:'0.6rem', fontSize:'1rem'}} onClick={() => setShowProfile(true)}>
+            👤 My Patient Dashboard
+          </button>
+        </div>
+
+        <hr style={{ borderColor: 'var(--border-color)', margin: '5px 0' }}/>
+
+        <div className="sidebar-card">
+          <strong>System Status</strong><br/>
+           Model: Grok-4 + Vector DB<br/>
+           Avg Response: 0.4s<br/>
+           Status: Operational
+        </div>
+
+        <div>
+          <h3 style={{marginTop: '0.5rem'}}>🕒 History</h3>
+          {history.length > 0 ? (
+            <>
+              {history.slice(-5).reverse().map((h, i) => (
+                <button 
+                  key={i} 
+                  className="history-btn" 
+                  onClick={() => {
+                    setCurrentInput(h);
+                    handleAsk(h);
+                  }}
+                >
+                  🔍 {h.substring(0, 25)}...
+                </button>
+              ))}
+              <button 
+                className="clear-history" 
+                onClick={() => {
+                  setHistory([]);
+                  setAnswer(null);
+                  setChunks(null);
+                  setResearchLinks(null);
+                  setCurrentInput('');
+                }}
+              >
+                🗑️ Clear History
+              </button>
+            </>
+          ) : (
+            <span style={{color: 'var(--text-secondary)', fontSize: '1rem'}}>No history yet.</span>
+          )}
+        </div>
+      </div>
