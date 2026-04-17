@@ -359,3 +359,167 @@ function App() {
                   </>
                 )}
               </div>
+              <div style={{ flex: 1 }}>
+                {researchLinks && researchLinks.length > 0 && (
+                  <>
+                    <h4 style={{marginBottom:'1rem'}}>🔬 External Research Portals</h4>
+                    <div className="chunk-card" style={{ borderLeftColor: '#38bdf8' }}>
+                      <p style={{fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem'}}>
+                        Direct queries against international medical databases based on your topic.
+                      </p>
+                      {researchLinks.map((link, idx) => (
+                        <a key={idx} href={link.url} target="_blank" rel="noreferrer" style={{ display: 'block', color: '#0ea5e9', textDecoration: 'none', marginBottom: '0.8rem', fontWeight: 500}}>
+                          {link.title} ↗
+                        </a>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+
+        <div className="disclaimer">
+          <strong>⚠️ Important Medical Disclaimer</strong><br/>
+          This AI tool is for informational and educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider.
+        </div>
+        
+        <div className="footer">
+          Built in &lt;30 mins with ❤️ & React | Delhi Hackathon 2026
+        </div>
+      </div>
+
+      {showProfile && (
+        <div className="modal-overlay" onClick={() => setShowProfile(false)}>
+          <div className="modal-content large" onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h2>Patient Dashboard</h2>
+              {savedUsers.length > 0 && (
+                <select className="styled-select" style={{ width: 'auto' }} onChange={e => {
+                  if (e.target.value === 'new') {
+                    setUserProfile({id: null, name: '', age: '', gender: 'Not specified', bp: '', history: ''});
+                  } else {
+                    const u = savedUsers.find(user => user.id == e.target.value);
+                    if (u) setUserProfile(u);
+                  }
+                }}>
+                  <option value="new">+ Create New Patient</option>
+                  {savedUsers.map(u => (
+                    <option key={u.id} value={u.id} selected={userProfile.id === u.id}>Load: {u.name}</option>
+                  ))}
+                </select>
+              )}
+            </div>
+            <p style={{color:'var(--text-secondary)', marginBottom: '1.5rem'}}>Update your profile so MedRAG can give you highly contextual medical guidance and references.</p>
+            
+            <div className="form-group">
+              <label>Patient Name</label>
+              <input type="text" placeholder="e.g. John Doe" value={userProfile.name || ''} onChange={e => setUserProfile({...userProfile, name: e.target.value})} />
+            </div>
+
+            <div className="flex-row">
+              <div className="form-group">
+                <label>Age</label>
+                <input type="number" placeholder="e.g. 45" value={userProfile.age} onChange={e => setUserProfile({...userProfile, age: e.target.value})} />
+              </div>
+              <div className="form-group">
+                <label>Gender</label>
+                <select value={userProfile.gender} onChange={e => setUserProfile({...userProfile, gender: e.target.value})}>
+                  <option>Not specified</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Current Blood Pressure</label>
+              <input type="text" placeholder="e.g. 120/80" value={userProfile.bp} onChange={e => setUserProfile({...userProfile, bp: e.target.value})} />
+            </div>
+
+            <div className="form-group">
+              <label>Medical History / Conditions</label>
+              <textarea rows="3" placeholder="e.g. Type 2 Diabetes, Asthma" value={userProfile.history} onChange={e => setUserProfile({...userProfile, history: e.target.value})}></textarea>
+            </div>
+
+            <button className="primary-btn" style={{width: '100%', marginTop: '1rem'}} onClick={saveProfile}>Save to Database</button>
+            
+            <div style={{ marginTop: '2.5rem' }}>
+              <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>
+                📊 Dynamic Health Metrics (3D)
+              </h3>
+              
+              <div className="dashboard-3d-container">
+                {(() => {
+                  const age = parseInt(userProfile.age) || 0;
+                  const [sys, dia] = (userProfile.bp || '').split('/').map(Number);
+                  const sysVal = sys || 0;
+                  
+                  // Calculate dynamic demo metrics
+                  const healthScore = age > 0 ? Math.max(10, 100 - (age * 0.3) - (sysVal > 120 ? (sysVal-120)*0.8 : 0)) : 0;
+                  const riskFactor = (sysVal > 130) ? 75 : (age > 40 ? 45 : 20);
+                  
+                  const charts = [
+                    { label: 'Vitality', value: healthScore > 0 ? healthScore : 40, colorBase: '#0ea5e9' },
+                    { label: 'BP (Sys)', value: sysVal > 0 ? sysVal : 80, colorBase: '#00BFA5' },
+                    { label: 'Risk (%)', value: age > 0 ? riskFactor : 15, colorBase: '#ef4444' }
+                  ];
+
+                  return charts.map((c, i) => (
+                    <div key={i} className="chart-item">
+                      <div className="bar-3d" style={{ '--bar-height': `${c.value * 1.5}px` }}>
+                        <div className="bar-3d-face front" style={{ background: c.colorBase }}></div>
+                        <div className="bar-3d-face back" style={{ background: c.colorBase, filter: 'brightness(0.7)' }}></div>
+                        <div className="bar-3d-face left" style={{ background: c.colorBase, filter: 'brightness(0.85)' }}></div>
+                        <div className="bar-3d-face right" style={{ background: c.colorBase, filter: 'brightness(0.85)' }}></div>
+                        <div className="bar-3d-face top" style={{ background: c.colorBase, filter: 'brightness(1.3)' }}></div>
+                        <span className="chart-value-label" style={{ color: c.colorBase }}>{Math.round(c.value)}</span>
+                      </div>
+                      <span className="chart-label">{c.label}</span>
+                    </div>
+                  ));
+                })()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChunkCard({ c }) {
+  const [expanded, setExpanded] = useState(false);
+  
+  return (
+    <div className="chunk-card">
+      <div className="chunk-title">
+        <span>📄 {c.title}</span>
+        <span style={{color: '#00BFA5', fontSize: '0.9rem'}}>⭐ Relevance: {c.score}%</span>
+      </div>
+      <div className="chunk-snippet" dangerouslySetInnerHTML={createMarkup(`"...${c.snippet}..."`)}></div>
+      
+      <button className="expander-btn" onClick={() => setExpanded(!expanded)}>
+        {expanded ? "Hide details" : "View full source \u2192"}
+      </button>
+
+      {expanded && (
+        <div className="expander-content">
+          <strong>Source Metadata</strong>
+          <ul>
+            <li><strong>Document ID:</strong> doc_{Math.floor(Math.random() * 9000) + 1000}</li>
+            <li><strong>Updated Date:</strong> {c.date}</li>
+            <li><strong>Extraction Confidence:</strong> {c.score}%</li>
+          </ul>
+          <br/>
+          <strong>Extended Text:</strong><br/>
+          The clinical framework requires an understanding of patient history. {c.snippet.replace(/<span class='highlight'>(.*?)<\/span>/gi, '$1')} Furthermore, standard operating procedures dictate that subsequent monitoring occurs on a structured basis to prevent relapse.
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
