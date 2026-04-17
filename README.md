@@ -189,7 +189,7 @@ The architecture is simple enough for hackathon deployment but modular enough to
 
 ### 1. Clone the repository
 
-git clone https://github.com/your-username/medrag-ai.git
+git clone https://github.com/arjunkumaritsme12/Medical-RAG-System-for-Healthcare-Knowledge-Access.git
 cd medrag-ai
 pip install streamlit
 streamlit run app.py
