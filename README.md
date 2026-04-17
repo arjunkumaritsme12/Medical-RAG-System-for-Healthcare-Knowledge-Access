@@ -16,7 +16,7 @@ The React Compiler is not enabled on this template because of its impact on dev 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
 
-## 🚀 Project Overview
+##  Project Overview
 
 Traditional AI tools often generate responses directly from model memory, which can lead to **hallucinations**, lack of transparency, and medically unsafe outputs.  
 MedRAG AI addresses this by following a **retrieval-first approach**:
@@ -30,35 +30,35 @@ This makes the project more **explainable, reliable, and domain-focused** than a
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
-- 🔍 **Medical Question Answering**
+-  **Medical Question Answering**
   - Ask questions related to diseases, symptoms, prevention, causes, treatment, and complications
 
-- 📚 **Structured Medical Knowledge Base**
+-  **Structured Medical Knowledge Base**
   - Uses a detailed JSON dataset containing multiple diseases and clinical concepts
 
-- 🧠 **RAG-Style Workflow**
+-  **RAG-Style Workflow**
   - Retrieval-first design improves answer grounding and reduces hallucination risk
 
-- 🧾 **Supporting Retrieved Chunks**
+-  **Supporting Retrieved Chunks**
   - Displays contextual evidence snippets along with the answer
 
-- 🎨 **Premium Streamlit UI**
+-  **Premium Streamlit UI**
   - Modern medical-themed interface with glassmorphism, animated cards, and responsive layout
 
-- 🕘 **Session-Based Chat History**
+-  **Session-Based Chat History**
   - Stores previous questions using `st.session_state`
 
-- 📖 **Simplified Explanation Mode**
+-  **Simplified Explanation Mode**
   - Converts answers into easier bullet-point explanations for non-technical users
 
-- ⚠️ **Medical Disclaimer**
+-  **Medical Disclaimer**
   - Clearly informs users that the tool is educational and not a substitute for clinical advice
 
 ---
 
-## 🏗️ Problem Statement
+##  Problem Statement
 
 Accessing relevant medical information quickly is often difficult because knowledge is distributed across many documents, articles, and public health sources.  
 General AI tools may answer quickly, but they often do not show where the answer comes from and may produce unreliable medical outputs.
@@ -72,7 +72,7 @@ The challenge is to build a system that can:
 
 ---
 
-## 💡 Proposed Solution
+##  Proposed Solution
 
 MedRAG AI provides a **medical retrieval-based assistant** that uses a structured disease knowledge base as the primary source of context.
 
@@ -87,7 +87,7 @@ This improves the trustworthiness of the system compared to standard black-box A
 
 ---
 
-## 🧠 How It Works
+##  How It Works
 
 ### Workflow
 
@@ -100,7 +100,7 @@ This improves the trustworthiness of the system compared to standard black-box A
 
 ---
 
-## 📂 Dataset
+##  Dataset
 
 The project uses a **single structured JSON medical dataset** containing detailed information for multiple diseases and clinical concepts.
 
@@ -146,7 +146,7 @@ This structure makes the dataset highly suitable for:
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Frontend / UI:** Streamlit
 - **Language:** Python
@@ -157,7 +157,7 @@ This structure makes the dataset highly suitable for:
 
 ---
 
-## 🎯 Why This Project Stands Out
+##  Why This Project Stands Out
 
 ### 1. Evidence-Oriented Approach
 Unlike generic AI tools, MedRAG AI is designed around **retrieval before response generation**, which makes answers more grounded.
@@ -173,7 +173,7 @@ The architecture is simple enough for hackathon deployment but modular enough to
 
 ---
 
-## 📸 UI Highlights
+##  UI Highlights
 
 - Wide modern layout
 - Medical-themed color palette
@@ -185,7 +185,7 @@ The architecture is simple enough for hackathon deployment but modular enough to
 
 ---
 
-## ▶️ Getting Started
+##  Getting Started
 
 ### 1. Clone the repository
 
