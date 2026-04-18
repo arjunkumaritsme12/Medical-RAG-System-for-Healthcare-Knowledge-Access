@@ -7,7 +7,7 @@ export default function Dashboard() {
   const [rewards, setRewards] = useState({ assessment: false, medRecord: false, checkup: false, familyAdded: false });
   const [redeeming, setRedeeming] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL || '';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://medical-rag-system-for-healthcare-f282.onrender.com';
 
   useEffect(() => {
     fetch(`${API_URL}/api/users`)

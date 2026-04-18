@@ -137,7 +137,7 @@ export default function Chat() {
     const demographic = document.getElementById('demographic')?.value || "General";
     const guidelines = document.getElementById('guidelines')?.value || "Global (WHO)";
 
-    const API_URL = import.meta.env.VITE_API_URL || '';
+    const API_URL = import.meta.env.VITE_API_URL || 'https://medical-rag-system-for-healthcare-f282.onrender.com';
 
     startLoadingSimulation(async () => {
       try {
