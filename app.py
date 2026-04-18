@@ -114,6 +114,7 @@ def inject_css():
             border-color: #00BFA5 !important;
             box-shadow: 0 0 0 3px rgba(0, 191, 165, 0.2), {shadow} !important;
         }}
+<<<<<<< HEAD
         
         /* Primary Button Override */
         .stButton>button {{
@@ -729,3 +730,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+=======
+>>>>>>> 17ff6735c2c604ba8c0ecc2911031a550cdbd216
