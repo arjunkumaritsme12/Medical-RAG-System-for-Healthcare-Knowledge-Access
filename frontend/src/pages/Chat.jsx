@@ -137,9 +137,11 @@ export default function Chat() {
     const demographic = document.getElementById('demographic')?.value || "General";
     const guidelines = document.getElementById('guidelines')?.value || "Global (WHO)";
 
+    const API_URL = import.meta.env.VITE_API_URL || '';
+
     startLoadingSimulation(async () => {
       try {
-        const res = await fetch('/api/ask', {
+        const res = await fetch(`${API_URL}/api/ask`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -153,6 +155,8 @@ export default function Chat() {
           })
         });
         
+        if (!res.ok) throw new Error('Backend error');
+        
         const data = await res.json();
         setAnswer(data.answer);
         setChunks(data.chunks);
@@ -162,9 +166,10 @@ export default function Chat() {
           answerRef.current?.scrollIntoView({ behavior: 'smooth' });
         }, 100);
       } catch (e) {
-        alert("Failed to reach backend API. Make sure the Node.js server is running on port 3001.");
+        alert("Failed to reach backend API. If you have deployed the backend, make sure VITE_API_URL is set in Netlify environment variables. Otherwise, the AI features will only work locally.");
       }
     });
+
   };
 
   return (
