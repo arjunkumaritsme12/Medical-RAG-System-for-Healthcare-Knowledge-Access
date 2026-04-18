@@ -1,23 +1,41 @@
 import os
 import json
 import uvicorn
+import sqlite3
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 from llama_index.core import Document, VectorStoreIndex, Settings
 from llama_index.llms.openai import OpenAI
 
-# Keys should be set as environment variables on Render
-# os.environ["OPENAI_API_KEY"] = "sk-proj-..." 
-# os.environ["LLAMA_CLOUD_API_KEY"] = "llx-..."
-
 # Configure LLM for LlamaIndex
 Settings.llm = OpenAI(model="gpt-4o-mini")
 
-from fastapi.middleware.cors import CORSMiddleware
-
 app = FastAPI()
+
+# Database Initialization
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "profiles.db")
+
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            age TEXT,
+            gender TEXT,
+            role TEXT,
+            bp TEXT,
+            history TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+init_db()
 
 # Add CORS middleware to allow Netlify frontend to access this API
 app.add_middleware(
@@ -82,6 +100,18 @@ CRITICAL: You MUST output your ENTIRE response exclusively in the requested lang
 class QueryRequest(BaseModel):
     query: str
     language: str = "english"
+
+class UserProfile(BaseModel):
+    id: Optional[int] = None
+    name: str = ""
+    age: str = ""
+    gender: str = "Not specified"
+    role: str = "Self"
+    bp: str = ""
+    history: str = ""
+
+class RedeemRequest(BaseModel):
+    email: str
     
 @app.post("/api/ask_llm")
 def ask_llm(req: QueryRequest):
@@ -109,6 +139,40 @@ def ask_llm(req: QueryRequest):
         "answer": str(response),
         "chunks": chunks
     }
+
+@app.get("/api/users")
+def get_users():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    rows = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return rows
+
+@app.post("/api/users")
+def create_or_update_user(user: UserProfile):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    if user.id:
+        cursor.execute("""
+            UPDATE users SET name=?, age=?, gender=?, role=?, bp=?, history=? WHERE id=?
+        """, (user.name, user.age, user.gender, user.role, user.bp, user.history, user.id))
+        user_id = user.id
+    else:
+        cursor.execute("""
+            INSERT INTO users (name, age, gender, role, bp, history) VALUES (?, ?, ?, ?, ?, ?)
+        """, (user.name, user.age, user.gender, user.role, user.bp, user.history))
+        user_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+    user.id = user_id
+    return user
+
+@app.post("/api/redeem")
+def redeem(req: RedeemRequest):
+    print(f"Redeeming discount for {req.email}")
+    return {"success": True, "message": f"Discount code sent to {req.email}"}
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))

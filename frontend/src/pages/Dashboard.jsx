@@ -7,16 +7,18 @@ export default function Dashboard() {
   const [rewards, setRewards] = useState({ assessment: false, medRecord: false, checkup: false, familyAdded: false });
   const [redeeming, setRedeeming] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL || '';
+
   useEffect(() => {
-    fetch('/api/users')
+    fetch(`${API_URL}/api/users`)
       .then(res => res.json())
       .then(data => setSavedUsers(data))
       .catch(err => console.error(err));
-  }, []);
+  }, [API_URL]);
 
   const saveProfile = async () => {
     try {
-      const res = await fetch('/api/users', {
+      const res = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userProfile)
@@ -44,7 +46,7 @@ export default function Dashboard() {
   const redeemRewards = async () => {
     setRedeeming(true);
     try {
-      const res = await fetch('/api/redeem', {
+      const res = await fetch(`${API_URL}/api/redeem`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: 'harshitthakur61521@gmail.com' })
@@ -56,6 +58,7 @@ export default function Dashboard() {
     }
     setRedeeming(false);
   };
+
 
   return (
     <div className="main-area" style={{ height: '100%' }}>

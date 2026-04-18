@@ -141,7 +141,7 @@ export default function Chat() {
 
     startLoadingSimulation(async () => {
       try {
-        const res = await fetch(`${API_URL}/api/ask`, {
+        const res = await fetch(`${API_URL}/api/ask_llm`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
