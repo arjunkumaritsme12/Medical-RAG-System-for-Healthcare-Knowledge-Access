@@ -57,6 +57,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root():
+    return {"message": "Medical RAG System API is running! Visit /docs for Swagger UI."}
+
 def load_medical_documents():
     # Make path relative to this script
     current_dir = os.path.dirname(os.path.abspath(__file__))
