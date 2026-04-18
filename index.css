@@ -342,7 +342,6 @@ body {
   flex-direction: column;
   align-items: flex-end;
 }
-
 .confidence-bar-bg {
   width: 150px;
   height: 6px;
@@ -378,7 +377,7 @@ body {
   border-radius: 12px;
   padding: 1.2rem;
   margin-bottom: 1rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
   transition: all 0.3s ease;
   animation: fadeInUp 0.5s ease-out;
 }
@@ -453,25 +452,50 @@ body {
 }
 
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
 }
 
 /* Dashboard Modal */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   z-index: 1000;
@@ -487,7 +511,7 @@ body {
   border-radius: 20px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--border-color);
 }
 
@@ -510,7 +534,7 @@ body {
   color: var(--text-secondary);
 }
 
-.form-group input, 
+.form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
@@ -534,7 +558,8 @@ body {
   display: flex;
   gap: 1rem;
 }
-.flex-row > * {
+
+.flex-row>* {
   flex: 1;
 }
 
@@ -572,9 +597,8 @@ body {
   background: var(--chip-bg);
   border-radius: 16px;
   border: 1px solid var(--border-color);
-  box-shadow: inset 0 4px 20px rgba(0,0,0,0.05);
+  box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.05);
 }
-
 .chart-item {
   display: flex;
   flex-direction: column;
@@ -607,38 +631,44 @@ body {
 .bar-3d-face.front {
   transform: translateZ(20px);
 }
+
 /* Back */
 .bar-3d-face.back {
   transform: translateZ(-20px) rotateY(180deg);
 }
+
 /* Right */
 .bar-3d-face.right {
   width: 40px;
   transform: translateX(20px) rotateY(90deg);
 }
+
 /* Left */
 .bar-3d-face.left {
   width: 40px;
   transform: translateX(-20px) rotateY(-90deg);
 }
+
 /* Top */
 .bar-3d-face.top {
   height: 40px;
   transform: translateY(-20px) rotateX(90deg);
-  box-shadow: inset 0 0 10px rgba(255,255,255,0.3);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .chart-label {
-  transform: rotateX(-60deg) rotateZ(45deg); /* Counteract parent rotation */
+  transform: rotateX(-60deg) rotateZ(45deg);
+  /* Counteract parent rotation */
   font-weight: 600;
   color: var(--text-primary);
   margin-top: 2rem;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .chart-value-label {
   position: absolute;
-  top: -40px; /* Above the bar */
+  top: -40px;
+  /* Above the bar */
   left: 50%;
   transform: translateX(-50%) rotateX(-60deg) rotateZ(45deg);
   font-weight: 700;
