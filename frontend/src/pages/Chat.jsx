@@ -137,7 +137,8 @@ export default function Chat() {
     const demographic = document.getElementById('demographic')?.value || "General";
     const guidelines = document.getElementById('guidelines')?.value || "Global (WHO)";
 
-    const API_URL = import.meta.env.VITE_API_URL || 'https://medical-rag-system-for-healthcare-f282.onrender.com';
+    const API_URL = 'https://medical-rag-system-for-healthcare-f282.onrender.com';
+    console.log("Fetching from:", `${API_URL}/api/ask_llm`);
 
     startLoadingSimulation(async () => {
       try {
