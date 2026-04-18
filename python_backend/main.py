@@ -8,17 +8,32 @@ from typing import List, Dict, Any
 from llama_index.core import Document, VectorStoreIndex, Settings
 from llama_index.llms.openai import OpenAI
 
-# Keys explicitly provided by user
-os.environ["OPENAI_API_KEY"] = "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"
-os.environ["LLAMA_CLOUD_API_KEY"] = "llx-Ol3EBtWceTI1RpHf8RfotZTeQtiHbVjalqRjnjpcTD4O5U6L"
+# Keys should be set as environment variables on Render
+# os.environ["OPENAI_API_KEY"] = "sk-proj-..." 
+# os.environ["LLAMA_CLOUD_API_KEY"] = "llx-..."
 
 # Configure LLM for LlamaIndex
 Settings.llm = OpenAI(model="gpt-4o-mini")
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
-def load_medical_documents(json_path="medical_dataset_medrag_ai.json"):
+# Add CORS middleware to allow Netlify frontend to access this API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # In production, replace with your Netlify URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+def load_medical_documents():
+    # Make path relative to this script
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(current_dir, "medical_dataset_medrag_ai.json")
     with open(json_path, "r", encoding="utf-8") as f:
+
         data = json.load(f)
 
     docs = []
@@ -96,4 +111,5 @@ def ask_llm(req: QueryRequest):
     }
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
