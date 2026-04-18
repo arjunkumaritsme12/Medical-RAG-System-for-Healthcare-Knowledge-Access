@@ -11,7 +11,16 @@ from llama_index.core import Document, VectorStoreIndex, Settings
 from llama_index.llms.openai import OpenAI
 
 # Configure LLM for LlamaIndex
-Settings.llm = OpenAI(model="gpt-4o-mini")
+api_key = os.environ.get("OPENAI_API_KEY")
+if not api_key:
+    print("❌ ERROR: OPENAI_API_KEY is not set in environment variables!")
+else:
+    print(f"✅ OPENAI_API_KEY found (starts with {api_key[:8]}...)")
+
+try:
+    Settings.llm = OpenAI(model="gpt-4o-mini")
+except Exception as e:
+    print(f"❌ ERROR initializing OpenAI: {e}")
 
 app = FastAPI()
 
@@ -19,6 +28,7 @@ app = FastAPI()
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "profiles.db")
 
 def init_db():
+    print(f"Initializing database at {DB_PATH}...")
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''
@@ -34,6 +44,7 @@ def init_db():
     ''')
     conn.commit()
     conn.close()
+    print("Database initialized.")
 
 init_db()
 
@@ -50,12 +61,17 @@ def load_medical_documents():
     # Make path relative to this script
     current_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(current_dir, "medical_dataset_medrag_ai.json")
+    print(f"Loading documents from {json_path}...")
+    if not os.path.exists(json_path):
+        print(f"❌ ERROR: {json_path} not found!")
+        return []
+        
     with open(json_path, "r", encoding="utf-8") as f:
-
         data = json.load(f)
 
     docs = []
-    for item in data["diseases"]:
+    diseases = data.get("diseases", [])
+    for item in diseases:
         text = f"""
         Condition: {item.get('condition', '')}
         Category: {item.get('category', '')}
@@ -79,14 +95,32 @@ def load_medical_documents():
         Source Authorities: {', '.join(item.get('source_authorities', []))}
         """
         docs.append(Document(text=text, metadata={"condition": item.get("condition", "Unknown")}))
+    print(f"Successfully loaded {len(docs)} documents.")
     return docs
 
-print("Building LlamaIndex VectorStore...")
-documents = load_medical_documents()
-index = VectorStoreIndex.from_documents(documents)
-query_engine = index.as_query_engine(similarity_top_k=2)
-retriever = index.as_retriever(similarity_top_k=2)
-print("Index built!")
+# Global variables for RAG
+query_engine = None
+retriever = None
+
+@app.on_event("startup")
+async def startup_event():
+    global query_engine, retriever
+    print("🚀 Starting backend initialization...")
+    try:
+        documents = load_medical_documents()
+        if not documents:
+            print("⚠️ No documents loaded. AI features might not work.")
+            return
+
+        print("Building LlamaIndex VectorStore (this may take a few seconds)...")
+        index = VectorStoreIndex.from_documents(documents)
+        query_engine = index.as_query_engine(similarity_top_k=2)
+        retriever = index.as_retriever(similarity_top_k=2)
+        print("✅ Index built and ready!")
+    except Exception as e:
+        print(f"❌ CRITICAL ERROR during startup: {e}")
+        # We don't want to crash the whole app just in case, 
+        # but the AI endpoints will fail gracefully later.
 
 SYSTEM_PROMPT = """
 You are a top-tier medical knowledge assistant.
